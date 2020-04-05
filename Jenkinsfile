@@ -1,40 +1,17 @@
 pipeline {
     agent {
-    kubernetes {
-      yaml """
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    some-label: some-label-value
-spec:
-  nodeSelector:
-    openstack-control-plane: enabled
-  containers:
-  - name: maven
-    image: maven:alpine
-    command:
-    - cat
-    tty: true
-"""
+        docker { image 'maven:alpine' }
     }
-  }
-
     stages {
-        stage('Build') {
-            steps {
-                echo 'Building..'
-            }
+    stage('Run maven') {
+      steps {
+        container('maven') {
+          sh 'mvn -version'
         }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
+        container('busybox') {
+          sh '/bin/busybox'
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
-        }
+      }
+    }
     }
 }
