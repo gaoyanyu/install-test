@@ -8,9 +8,6 @@ pipeline {
         container('maven') {
           sh 'mvn -version'
         }
-        container('busybox') {
-          sh '/bin/busybox'
-        }
       }
     }
     }
