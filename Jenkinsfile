@@ -32,7 +32,8 @@ spec:
         }
         container('docker-dind') {
           sh 'cd /root && sleep 2000'
-          sh 'cd /root && docker build -t ubuntu-with-vi-dockerfile .'
+          //sh 'cd /root && docker build -t ubuntu-with-vi-dockerfile .'
+          sh 'cd /root && docker --version'
           sh 'cd /root && sleep 300'
         }
       }
