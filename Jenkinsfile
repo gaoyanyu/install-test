@@ -1,5 +1,5 @@
 pipeline {
-    agent {
+  agent {
     kubernetes {
       yaml """
 apiVersion: v1
@@ -16,16 +16,25 @@ spec:
     command:
     - cat
     tty: true
+  - name: docker-dind
+    image: hub.easystack.io/production/docker:dind-with-test-dockerfile
+    command:
+    - cat
+    tty: true
 """
     }
   }
-    stages {
+  stages {
     stage('Run maven') {
       steps {
         container('maven') {
           sh 'mvn -version'
         }
+        container('docker-dind') {
+          sh 'cd /root && docker build -t ubuntu-with-vi-dockerfile .'
+          sh 'cd /root && sleep 600'
+        }
       }
     }
-    }
+  }
 }
