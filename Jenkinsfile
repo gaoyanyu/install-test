@@ -33,7 +33,7 @@ spec:
       hostPath:
         path: /root/Dockerfile
     - name: docker-sock
-      hostpath:
+      hostPath:
         path: /var/run/docker.sock
 """
     }
