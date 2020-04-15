@@ -27,7 +27,7 @@ spec:
     - name: daemon-json
       hostPath:
         path: /etc/docker/daemon.json
-    - name: daemon-json
+    - name: docker-build
       hostPath:
         path: /root/Dockerfile
 """
@@ -37,7 +37,7 @@ spec:
     stage('Build docker image') {
       steps {
         container('docker-dind') {
-          sh 'cd /root && sleep 300'
+          sh 'cd /root && sleep 200'
           sh 'cd /root && docker build -t ubuntu-with-vi-dockerfile .'
           sh 'cd /root && docker images'
           sh 'cd /root && sleep 300'
