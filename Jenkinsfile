@@ -13,7 +13,7 @@ spec:
   containers:
   - name: docker-dind
     image: hub.easystack.io/production/docker:dind-with-test-dockerfile
-    imagePullPolicy: OnFailure
+    imagePullPolicy: Always
     command:
     - cat
     tty: true
