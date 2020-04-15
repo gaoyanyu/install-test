@@ -23,6 +23,8 @@ spec:
         mountPath: /etc/docker/daemon.json
       - name: docker-build
         mountPath: /root/Dockerfile
+      - name: docker-sock
+        mountPath: /var/run/docker.sock
   volumes:
     - name: daemon-json
       hostPath:
@@ -30,6 +32,9 @@ spec:
     - name: docker-build
       hostPath:
         path: /root/Dockerfile
+    - name: docker-sock
+      hostpath:
+        path: /var/run/docker.sock
 """
     }
   }
