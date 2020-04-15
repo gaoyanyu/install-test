@@ -23,8 +23,6 @@ spec:
         mountPath: /etc/docker/daemon.json
       - name: docker-build
         mountPath: /root/Dockerfile
-      - name: docker-sock
-        mountPath: /var/run/docker.sock
   volumes:
     - name: daemon-json
       hostPath:
@@ -32,9 +30,6 @@ spec:
     - name: docker-build
       hostPath:
         path: /root/Dockerfile
-    - name: docker-sock
-      hostPath:
-        path: /var/run/docker.sock
 """
     }
   }
@@ -42,7 +37,8 @@ spec:
     stage('Build docker image') {
       steps {
         container('docker-dind') {
-          sh 'cd /root && sleep 200'
+          sh 'cd /root && sleep 100'
+          sh 'dockerd -H tcp://0.0.0.0:2375'
           sh 'cd /root && docker build -t ubuntu-with-vi-dockerfile .'
           sh 'cd /root && docker images'
           sh 'cd /root && sleep 300'
