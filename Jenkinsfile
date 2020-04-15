@@ -21,6 +21,7 @@ spec:
     command:
     - cat
     tty: true
+    privileged: true
 """
     }
   }
@@ -31,9 +32,9 @@ spec:
           sh 'mvn -version'
         }
         container('docker-dind') {
-          sh 'cd /root && sleep 2000'
-          //sh 'cd /root && docker build -t ubuntu-with-vi-dockerfile .'
-          sh 'cd /root && docker ps'
+          sh 'cd /root && sleep 300'
+          sh 'cd /root && docker build -t ubuntu-with-vi-dockerfile .'
+          sh 'cd /root && docker images'
           sh 'cd /root && sleep 300'
         }
       }
