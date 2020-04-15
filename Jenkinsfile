@@ -11,26 +11,31 @@ spec:
   nodeSelector:
     openstack-control-plane: enabled
   containers:
-  - name: maven
-    image: maven:alpine
-    command:
-    - cat
-    tty: true
   - name: docker-dind
     image: hub.easystack.io/production/docker:dind-with-test-dockerfile
+    imagePullPolicy: OnFailure
     command:
     - cat
     tty: true
     privileged: true
+    volumeMounts:
+      - name: daemon-json
+        mountPath: /etc/docker/daemon.json
+      - name: docker-build
+        mountPath: /root/Dockerfile
+  volumes:
+    - name: daemon-json
+      hostPath:
+        path: /etc/docker/daemon.json
+    - name: daemon-json
+      hostPath:
+        path: /root/Dockerfile
 """
     }
   }
   stages {
-    stage('Run maven') {
+    stage('Build docker image') {
       steps {
-        container('maven') {
-          sh 'mvn -version'
-        }
         container('docker-dind') {
           sh 'cd /root && sleep 300'
           sh 'cd /root && docker build -t ubuntu-with-vi-dockerfile .'
