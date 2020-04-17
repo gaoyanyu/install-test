@@ -17,7 +17,8 @@ spec:
     command:
     - cat
     tty: true
-    privileged: true
+    securityContext:
+      privileged: true
     volumeMounts:
       - name: daemon-json
         mountPath: /etc/docker/daemon.json
