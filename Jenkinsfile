@@ -22,17 +22,12 @@ spec:
     volumeMounts:
       - name: daemon-json
         mountPath: /etc/docker/daemon.json
-      - name: docker-build
-        mountPath: /root/Dockerfile
       - name: dind-storage
         mountPath: /var/lib/docker
   volumes:
     - name: daemon-json
       hostPath:
         path: /etc/docker/daemon.json
-    - name: docker-build
-      hostPath:
-        path: /root/Dockerfile
     - name: dind-storage
       emptyDir: {}
 """
