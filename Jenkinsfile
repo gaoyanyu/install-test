@@ -13,6 +13,13 @@ spec:
   containers:
   - name: jnlp
     image: jenkins/jnlp-slave:3.35-5-alpine
+    resources:
+        limits:
+          cpu: 1
+          memory: 2Gi
+        requests:
+          cpu: 1
+          memory: 2Gi
     imagePullPolicy: Always
     env:
     - name: DOCKER_HOST
