@@ -12,7 +12,7 @@ spec:
     openstack-control-plane: enabled
   containers:
   - name: jnlp
-    image:jenkins/jnlp-slave:3.35-5-alpine
+    image: jenkins/jnlp-slave:3.35-5-alpine
     imagePullPolicy: Always
     env:
     - name: DOCKER_HOST
