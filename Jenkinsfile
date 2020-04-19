@@ -11,14 +11,17 @@ spec:
   nodeSelector:
     openstack-control-plane: enabled
   containers:
+  - name: jnlp
+    image:jenkins/jnlp-slave:3.35-5-alpine
+    imagePullPolicy: Always
+    env:
+    - name: DOCKER_HOST
+      value: tcp://localhost:2375
   - name: docker-dind
     image: hub.easystack.io/production/docker:dind-with-test-dockerfile
     imagePullPolicy: Always
     securityContext:
       privileged: true
-    env:
-    - name: DOCKER_HOST
-      value: tcp://localhost:2375
     volumeMounts:
       - name: daemon-json
         mountPath: /etc/docker/daemon.json
