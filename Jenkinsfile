@@ -15,8 +15,8 @@ spec:
     image: jenkins/jnlp-slave:3.35-5-alpine
     resources:
         limits:
-          cpu: 1
-          memory: 2Gi
+          cpu: 2
+          memory: 3Gi
         requests:
           cpu: 1
           memory: 2Gi
