@@ -14,9 +14,6 @@ spec:
   - name: docker-dind
     image: hub.easystack.io/production/docker:dind-with-test-dockerfile
     imagePullPolicy: Always
-    env:
-    - name: DOCKER_HOST
-      value: tcp://localhost:2375
     securityContext:
       privileged: true
     volumeMounts:
