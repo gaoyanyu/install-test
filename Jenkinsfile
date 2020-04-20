@@ -1,7 +1,6 @@
 pipeline {
   podTemplate(containers: [
     containerTemplate(
-  containers:
     name: 'docker-dind',
     image: 'docker:dind',
     alwaysPullImage: false,
@@ -13,7 +12,7 @@ pipeline {
     emptyDirVolume(mountPath: '/var/lib/docker', memory: true)
   ]
   )]
-  
+  )
   stages {
     stage('Build docker image') {
       steps {
