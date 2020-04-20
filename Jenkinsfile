@@ -12,7 +12,7 @@ spec:
     openstack-control-plane: enabled
   containers:
   - name: docker-dind
-    image: hub.easystack.io/production/docker
+    image: docker:dind
     imagePullPolicy: IfNotPresent
     securityContext:
       privileged: true
