@@ -17,8 +17,10 @@ spec:
     - privileged: true
     - envVars:
       - containerEnvVar
-        key: DOCKER_HOST
-        value: tcp://localhost:2375
+        key
+            DOCKER_HOST
+        value
+            tcp://localhost:2375
   volumes:
     - hostPathVolume
         hostPath
