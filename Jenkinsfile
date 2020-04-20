@@ -16,7 +16,7 @@ spec:
     imagePullPolicy: IfNotPresent
     securityContext:
       privileged: true
-    env
+    env:
     - name: DOCKER_HOST
       value: tcp://localhost:2375
     volumeMounts:
