@@ -1,15 +1,7 @@
 pipeline {
-  agent {
-    kubernetes {
-      yaml """
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    some-label: some-label-value
-spec:
+  podTemplate([
   nodeSelector:
-    openstack-control-plane: enabled
+    openstack-control-plane
   containers:
     - name: docker-dind
     - image: docker:dind
@@ -37,9 +29,8 @@ spec:
             /var/lib/docker
         memory
             true
-"""
-    }
-  }
+  ])
+  
   stages {
     stage('Build docker image') {
       steps {
