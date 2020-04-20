@@ -2,7 +2,7 @@ pipeline {
   podTemplate(containers: [
     containerTemplate(
   containers:
-    name: ‘docker-dind’,
+    name: 'docker-dind',
     image: 'docker:dind',
     alwaysPullImage: false,
     privileged: true,
