@@ -1,5 +1,5 @@
 pipeline {
-  podTemplate([
+  podTemplate(
   nodeSelector:
     openstack-control-plane
   containers:
@@ -29,7 +29,7 @@ pipeline {
             /var/lib/docker
         memory
             true
-  ])
+  )
   
   stages {
     stage('Build docker image') {
