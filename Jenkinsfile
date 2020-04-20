@@ -11,30 +11,28 @@ spec:
   nodeSelector:
     openstack-control-plane: enabled
   containers:
-  - name: jnlp
-    image: jenkins/jnlp-slave:3.35-5-alpine
-    imagePullPolicy: Always
-    env:
-    - name: POD_IP
-      valueFrom:
-        fieldRef:
-          fieldPath: status.podIP
-    - name: DOCKER_HOST
-      value: tcp://localhost:2375
   - name: docker-dind
-    image: hub.easystack.io/production/docker:dind
+    image: hub.easystack.io/production/docker
     imagePullPolicy: IfNotPresent
     securityContext:
       privileged: true
+    env
+    - name: DOCKER_HOST
+      value: tcp://localhost:2375
     volumeMounts:
       - name: daemon-json
         mountPath: /etc/docker/daemon.json
       - name: dind-storage
         mountPath: /var/lib/docker
+      - name: docker-file
+        mountPath: /root/Dockerfile
   volumes:
     - name: daemon-json
       hostPath:
         path: /etc/docker/daemon.json
+    - name: docker-file
+      hostPath:
+        path: /root/Dockerfile
     - name: dind-storage
       emptyDir: {}
 """
