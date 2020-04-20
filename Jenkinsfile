@@ -11,30 +11,30 @@ spec:
   nodeSelector:
     openstack-control-plane: enabled
   containers:
-  - name: docker-dind
-    image: docker:dind
-    imagePullPolicy: IfNotPresent
-    securityContext:
-      privileged: true
-    env:
-    - name: DOCKER_HOST
-      value: tcp://localhost:2375
-    volumeMounts:
-      - name: daemon-json
-        mountPath: /etc/docker/daemon.json
-      - name: dind-storage
-        mountPath: /var/lib/docker
-      - name: docker-file
-        mountPath: /root/Dockerfile
+    - name: docker-dind
+    - image: docker:dind
+    - alwaysPullImage: false
+    - privileged: true
+    - envVars:
+      - containerEnvVar
+        key: DOCKER_HOST
+        value: tcp://localhost:2375
   volumes:
-    - name: daemon-json
-      hostPath:
-        path: /etc/docker/daemon.json
-    - name: docker-file
-      hostPath:
-        path: /root/Dockerfile
-    - name: dind-storage
-      emptyDir: {}
+    - hostPathVolume
+        hostPath
+            /root/Dockerfile
+        mountPath
+            /root/Dockerfil
+    - hostPathVolume
+        hostPath
+            /etc/docker/daemon.json
+        mountPath
+            /etc/docker/daemon.json
+    - emptyDirVolume
+        mountPath
+            /var/lib/docker
+        memory
+            true
 """
     }
   }
