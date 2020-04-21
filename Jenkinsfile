@@ -11,22 +11,31 @@ spec:
   nodeSelector:
     openstack-control-plane: enabled
   containers:
+  - name: docker
+    image: docker:19.03.1
+    imagePullPolicy: IfNotPresent
+    command:
+    - sleep
+    args:
+    - 99d
+    tty: true
+    env:
+      - name: DOCKER_HOST
+        value: tcp://localhost:2375
+    volumeMounts:
+      - name: docker-file
+        mountPath: /root/Dockerfile
   - name: docker-dind
     image: docker:dind
-    imagePullPolicy: Always
+    imagePullPolicy: IfNotPresent
     command:
     - cat
     tty: true
     securityContext:
       privileged: true
-    env:
-    - name: DOCKER_HOST
-      value: tcp://localhost:2375
     volumeMounts:
       - name: daemon-json
         mountPath: /etc/docker/daemon.json
-      - name: docker-build
-        mountPath: /root/Dockerfile
       - name: dind-storage
         mountPath: /var/lib/docker
   volumes:
@@ -44,7 +53,7 @@ spec:
   stages {
     stage('Build docker image') {
       steps {
-        container('docker-dind') {
+        container('docker') {
           sh 'cd /root/ && sleep 1000'
           sh 'cd /root/ && docker build -t jenkins-test-dind .'
           sh 'cd /root/ && docker images'
