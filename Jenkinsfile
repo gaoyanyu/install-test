@@ -44,7 +44,7 @@ spec:
   stages {
     stage('Build docker image') {
       steps {
-        container('jnlp') {
+        container('docker-dind') {
           sh 'cd /root/ && sleep 1000'
           sh 'cd /root/ && docker build -t jenkins-test-dind .'
           sh 'cd /root/ && docker images'
