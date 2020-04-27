@@ -35,16 +35,11 @@ spec:
       - name: DOCKER_TLS_CERTDIR
         value: ""
     volumeMounts:
-      - name: daemon-json
-        mountPath: /etc/docker/daemon.json
       - name: dind-storage
         mountPath: /var/lib/docker
       - name: harbor-config
         mountPath: /var/harbor_config
   volumes:
-    - name: daemon-json
-      hostPath:
-        path: /etc/docker/daemon.json
     - name: docker-build
       hostPath:
         path: /root/Dockerfile
@@ -58,6 +53,13 @@ spec:
     }
   }
   stages {
+    stage('login to harbor') {
+      steps {
+        container('docker-daemon') {
+          sh 'cd /root/ && docker login -u  -p  '
+        }
+      }
+    }
     stage('Build docker image') {
       steps {
         container('docker') {
