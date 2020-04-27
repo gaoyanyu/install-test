@@ -25,17 +25,22 @@ spec:
     volumeMounts:
       - name: docker-file
         mountPath: /root/Dockerfile
-  - name: docker-dind
+  - name: docker-daemon
     image: docker:dind
     imagePullPolicy: IfNotPresent
     tty: true
     securityContext:
       privileged: true
+    env:
+      - name: DOCKER_TLS_CERTDIR
+        value: ""
     volumeMounts:
       - name: daemon-json
         mountPath: /etc/docker/daemon.json
       - name: dind-storage
         mountPath: /var/lib/docker
+      - name: harbor-config
+        mountPath: /var/harbor_config
   volumes:
     - name: daemon-json
       hostPath:
@@ -45,6 +50,10 @@ spec:
         path: /root/Dockerfile
     - name: dind-storage
       emptyDir: {}
+    - configMap:
+        defaultMode: 420
+        name: jenkins
+      name: harbor-config
 """
     }
   }
