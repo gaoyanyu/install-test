@@ -52,9 +52,6 @@ spec:
         mountPath: /etc/docker/daemon.json
         subPath: daemon.json
   volumes:
-    - name: docker-build
-      hostPath:
-        path: /root/Dockerfile
     - name: dind-storage
       emptyDir: {}
     - name: docker-config
@@ -67,6 +64,7 @@ spec:
     stage('login to harbor') {
       steps {
         container('docker-daemon') {
+          sh 'sleep 1000'
           sh 'cd /root/ && docker login -u ${JENKINS_HARBOR_USER} -p ${JENKINS_HARBOR_PASSWD}'
         }
       }
