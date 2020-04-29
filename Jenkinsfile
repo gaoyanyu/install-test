@@ -64,15 +64,15 @@ spec:
     stage('login to harbor') {
       steps {
         container('docker-daemon') {
-          sh 'sleep 1000'
-          sh 'cd /root/ && docker login -u ${JENKINS_HARBOR_USER} -p ${JENKINS_HARBOR_PASSWD}'
+          sh 'sleep 60'
+          sh 'cd /root/ && docker login hub.easystack.io -u ${JENKINS_HARBOR_USER} -p ${JENKINS_HARBOR_PASSWD}'
         }
       }
     }
     stage('Build docker image') {
       steps {
         container('docker') {
-          sh 'cd /root/ && sleep 1000'
+          sh 'cd /root/ && sleep 60'
           sh 'cd /root/ && cp /root/Dockerfile /home/jenkins/agent/workspace/test/Dockerfile'
           sh 'cd /home/jenkins/agent/workspace/test && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
           sh 'cd /root/ && docker images'
