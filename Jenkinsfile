@@ -73,10 +73,10 @@ spec:
       steps {
         container('docker') {
           sh 'cd /root/ && sleep 60'
-          sh 'cd /root/ && cp /root/Dockerfile /home/jenkins/agent/workspace/test/Dockerfile'
-          sh 'cd /home/jenkins/agent/workspace/test && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
+          //sh 'cd /root/ && cp /root/Dockerfile /home/jenkins/agent/workspace/test/Dockerfile'
+          sh 'cd /home/jenkins/agent/workspace/test_master && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
           sh 'cd /root/ && docker images'
-          sh 'cd /root/ && sleep 600'
+          sh 'cd /root/ && sleep 3600'
           sh 'docker push hub.easystack.io/production/testing-docker-in-docker:latest'
         }
       }
