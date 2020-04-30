@@ -65,6 +65,7 @@ spec:
       steps {
         container('docker') {
           sh 'sleep 30'
+          sh 'apk add curl'
           sh 'cd /root && curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.7.0/bin/linux/amd64/kubectl'
           sh 'cd /root && chmod +x ./kubectl'
           sh 'cd /root && mv ./kubectl /usr/local/bin/kubectl'
