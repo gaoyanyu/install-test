@@ -64,7 +64,7 @@ spec:
     stage('create configmap') {
       steps {
         container('docker') {
-          sh 'sleep 30'
+          sh 'sleep 10'
           sh 'apk add curl'
           sh 'cd /root && curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.7.0/bin/linux/amd64/kubectl'
           sh 'cd /root && chmod +x ./kubectl'
@@ -76,7 +76,7 @@ spec:
     stage('login to harbor') {
       steps {
         container('docker-daemon') {
-          sh 'sleep 30'
+          sh 'sleep 10'
           sh 'cd /root/ && docker login hub.easystack.io -u ${JENKINS_HARBOR_USER} -p ${JENKINS_HARBOR_PASSWD}'
         }
       }
@@ -88,7 +88,7 @@ spec:
           //sh 'cd /root/ && cp /root/Dockerfile /home/jenkins/agent/workspace/test/Dockerfile'
           sh 'cd /home/jenkins/agent/workspace/test_master && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
           sh 'cd /root/ && docker images'
-          sh 'cd /root/ && sleep 30'
+          sh 'cd /root/ && sleep 10'
           sh 'docker push hub.easystack.io/production/testing-docker-in-docker:latest'
         }
       }
