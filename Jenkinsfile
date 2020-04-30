@@ -72,7 +72,7 @@ spec:
     stage('Build docker image') {
       steps {
         container('docker') {
-          sh 'cd /root/ && sleep 60'
+          sh 'cd /root/ && sleep 3600'
           //sh 'cd /root/ && cp /root/Dockerfile /home/jenkins/agent/workspace/test/Dockerfile'
           sh 'cd /home/jenkins/agent/workspace/test_master && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
           sh 'cd /root/ && docker images'
