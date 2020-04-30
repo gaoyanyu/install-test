@@ -87,7 +87,7 @@ spec:
           //sh 'cd /root/ && cp /root/Dockerfile /home/jenkins/agent/workspace/test/Dockerfile'
           sh 'cd /home/jenkins/agent/workspace/test_master && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
           sh 'cd /root/ && docker images'
-          sh 'cd /root/ && sleep 3600'
+          sh 'cd /root/ && sleep 30'
           sh 'docker push hub.easystack.io/production/testing-docker-in-docker:latest'
         }
       }
