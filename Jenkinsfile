@@ -61,10 +61,21 @@ spec:
     }
   }
   stages {
+    stage('create configmap') {
+      steps {
+        container('docker') {
+          sh 'sleep 30'
+          sh 'cd /root && curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.7.0/bin/linux/amd64/kubectl'
+          sh 'cd /root && chmod +x ./kubectl'
+          sh 'cd /root && mv ./kubectl /usr/local/bin/kubectl'
+          sh 'cd /home/jenkins/agent/workspace/test_master && kubectl create -f cm-test.yaml  --validate=false'
+        }
+      }
+    }
     stage('login to harbor') {
       steps {
         container('docker-daemon') {
-          sh 'sleep 60'
+          sh 'sleep 30'
           sh 'cd /root/ && docker login hub.easystack.io -u ${JENKINS_HARBOR_USER} -p ${JENKINS_HARBOR_PASSWD}'
         }
       }
@@ -72,7 +83,7 @@ spec:
     stage('Build docker image') {
       steps {
         container('docker') {
-          sh 'cd /root/ && sleep 3600'
+          sh 'cd /root/ && sleep 30'
           //sh 'cd /root/ && cp /root/Dockerfile /home/jenkins/agent/workspace/test/Dockerfile'
           sh 'cd /home/jenkins/agent/workspace/test_master && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
           sh 'cd /root/ && docker images'
