@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jenkins-harbor
+  namespace: ems
+data:
+  HARBOR_USER: admin
+  HARBOR_PASSWD: Admin@Harbor2019
+  daemon.json: |-
+    {"insecure-registries" : ["gcr.io", "quay.io" , "es.image", "hub.easystack.io", "hub.easystack.cn"]}
+  Dockerfile: |-
+   FROM hub.easystack.io/production/escloud-linux-source-busybox:latest
+   RUN yum install -y vsftpd
