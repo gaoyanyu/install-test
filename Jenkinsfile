@@ -22,10 +22,6 @@ spec:
     env:
       - name: DOCKER_HOST
         value: tcp://localhost:2375
-    volumeMounts:
-      - name: docker-config
-        mountPath: /root/Dockerfile
-        subPath: Dockerfile
   - name: docker-daemon
     image: docker:dind
     imagePullPolicy: IfNotPresent
@@ -35,28 +31,12 @@ spec:
     env:
       - name: DOCKER_TLS_CERTDIR
         value: ""
-      - name: JENKINS_HARBOR_USER
-        valueFrom:
-          configMapKeyRef:
-            name: jenkins-harbor
-            key: HARBOR_USER
-      - name: JENKINS_HARBOR_PASSWD
-        valueFrom:
-          configMapKeyRef:
-            name: jenkins-harbor
-            key: HARBOR_PASSWD
     volumeMounts:
       - name: dind-storage
         mountPath: /var/lib/docker
-      - name: docker-config
-        mountPath: /etc/docker/daemon.json
-        subPath: daemon.json
   volumes:
     - name: dind-storage
       emptyDir: {}
-    - name: docker-config
-      configMap:
-        name: jenkins-harbor
 """
     }
   }
@@ -77,7 +57,8 @@ spec:
       steps {
         container('docker-daemon') {
           sh 'sleep 10'
-          sh 'cd /root/ && docker login hub.easystack.io -u ${JENKINS_HARBOR_USER} -p ${JENKINS_HARBOR_PASSWD}'
+          sh 'mkdir -p /etc/docker && cp /home/jenkins/agent/workspace/test_master/daemon.json /etc/docker/'
+          sh 'cd /root/ && docker login hub.easystack.io -u admin -p Admin@Harbor2019'
         }
       }
     }
