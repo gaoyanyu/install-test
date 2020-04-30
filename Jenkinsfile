@@ -68,7 +68,7 @@ spec:
           sh 'cd /root && curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.7.0/bin/linux/amd64/kubectl'
           sh 'cd /root && chmod +x ./kubectl'
           sh 'cd /root && mv ./kubectl /usr/local/bin/kubectl'
-          sh 'cd /home/jenkins/agent/workspace/test_master && kubectl create -f cm-test.yaml  --validate=false'
+          sh 'cd /home/jenkins/agent/workspace/test_master && kubectl create -f cm-jenkins.yaml  --validate=false'
         }
       }
     }
