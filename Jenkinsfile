@@ -12,7 +12,7 @@ spec:
     openstack-control-plane: enabled
   containers:
   - name: docker
-    image: docker:19.03.1
+    image: hub.easystack.io/production/docker:19.03.1
     imagePullPolicy: IfNotPresent
     command:
     - sleep
@@ -23,7 +23,7 @@ spec:
       - name: DOCKER_HOST
         value: tcp://localhost:2375
   - name: docker-daemon
-    image: docker:dind
+    image: hub.easystack.io/production/docker:dind
     imagePullPolicy: IfNotPresent
     tty: true
     securityContext:
