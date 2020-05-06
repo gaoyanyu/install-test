@@ -41,9 +41,11 @@ spec:
     }
   }
   stages{
-    stage('login to harbor') {
+    stage('prepare') {
       checkout scm
-      def docker_registry = "hub.easystack.io"
+      docker_registry = "hub.easystack.io"
+    }
+    stage('login to harbor') {
       steps {
         container('docker') {
           sh "sleep 30"
