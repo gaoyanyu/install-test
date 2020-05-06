@@ -34,9 +34,15 @@ spec:
     volumeMounts:
       - name: dind-storage
         mountPath: /var/lib/docker
+      - name: docker-config
+        mountPath: /etc/docker/daemon.json
+        subPath: daemon.json
   volumes:
     - name: dind-storage
       emptyDir: {}
+    - name: docker-config
+      configMap:
+        name: jenkins-harbor
 """
     }
   }
