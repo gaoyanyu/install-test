@@ -42,13 +42,12 @@ spec:
   }
   stages{
     stage('login to harbor') {
-      environment {
-        BITBUCKET_COMMON_CREDS = credentials('dockerHub')
-      }
+      docker_registry = "hub.easystack.io"
       steps {
         container('docker') {
           sh "sleep 30"
-          sh "docker login ${dockerRegistryUrl} -u $BITBUCKET_COMMON_CREDS_USR -p $BITBUCKET_COMMON_CREDS_PSW"
+          withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')])
+          sh "docker login ${docker_registry} -u ${dockerHubUser} -p ${dockerHubPassword}"
           sh "sleep 60"
           //sh 'cd /root/ && docker login hub.easystack.io -u ${JENKINS_HARBOR_USER} -p ${JENKINS_HARBOR_PASSWD}'
         }
