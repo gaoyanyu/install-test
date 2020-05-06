@@ -40,32 +40,31 @@ spec:
 """
     }
   }
-  node(label) {
-    stages{
-      def dockerRegistryUrl = "hub.easystack.io"
-      stage('login to harbor') {
-        steps {
-          container('docker') {
-            sh "sleep 30"
-            withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')])
-            sh "docker login ${dockerRegistryUrl} -u ${dockerHubUser} -p ${dockerHubPassword}"
-            sh "sleep 60"
-            //sh 'cd /root/ && docker login hub.easystack.io -u ${JENKINS_HARBOR_USER} -p ${JENKINS_HARBOR_PASSWD}'
-          }
-        }
+  stages{
+    stage('login to harbor') {
+      environment {
+        BITBUCKET_COMMON_CREDS = credentials('dockerHub')
       }
-      stage('Build docker image') {
-        steps {
-          container('docker') {
-            sh 'cd /root/ && sleep 60'
-            //sh 'cd /root/ && cp /root/Dockerfile /home/jenkins/agent/workspace/test/Dockerfile'
-            sh 'cd /home/jenkins/agent/workspace/test_master && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
-            sh 'cd /root/ && docker images'
-            sh 'cd /root/ && sleep 60'
-            sh 'docker push hub.easystack.io/production/testing-docker-in-docker:latest'
-          }
+      steps {
+        container('docker') {
+          sh "sleep 30"
+          sh "docker login ${dockerRegistryUrl} -u $BITBUCKET_COMMON_CREDS_USR -p $BITBUCKET_COMMON_CREDS_PSW"
+          sh "sleep 60"
+          //sh 'cd /root/ && docker login hub.easystack.io -u ${JENKINS_HARBOR_USER} -p ${JENKINS_HARBOR_PASSWD}'
         }
       }
     }
-   }
+    stage('Build docker image') {
+      steps {
+        container('docker') {
+          sh 'cd /root/ && sleep 60'
+          //sh 'cd /root/ && cp /root/Dockerfile /home/jenkins/agent/workspace/test/Dockerfile'
+          sh 'cd /home/jenkins/agent/workspace/test_master && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
+          sh 'cd /root/ && docker images'
+          sh 'cd /root/ && sleep 60'
+          sh 'docker push hub.easystack.io/production/testing-docker-in-docker:latest'
+        }
+      }
+    }
+  } 
 }
