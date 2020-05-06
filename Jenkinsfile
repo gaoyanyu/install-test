@@ -46,8 +46,8 @@ spec:
         container('docker') {
           sh "sleep 30"
           withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-          sh "docker login hub.easystack.io -u ${dockerHubUser} -p ${dockerHubPassword}"
-          sh "sleep 60"
+              sh "docker login hub.easystack.io -u ${dockerHubUser} -p ${dockerHubPassword}"
+              sh "sleep 60"
           }
         }
       }
