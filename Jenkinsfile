@@ -40,13 +40,14 @@ spec:
 """
     }
   }
-  stages {
+  node(label) {
+    def dockerRegistryUrl = "hub.easystack.io"
     stage('login to harbor') {
       steps {
         container('docker') {
           sh "sleep 30"
-          withCredentials([usernamePassword(credentialsId: 'hub.easystack.io', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')])
-          sh "docker login ${hub.easystack.io} -u ${dockerHubUser} -p ${dockerHubPassword}"
+          withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')])
+          sh "docker login ${dockerRegistryUrl} -u ${dockerHubUser} -p ${dockerHubPassword}"
           sh "sleep 60"
           //sh 'cd /root/ && docker login hub.easystack.io -u ${JENKINS_HARBOR_USER} -p ${JENKINS_HARBOR_PASSWD}'
         }
