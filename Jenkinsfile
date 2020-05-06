@@ -3,20 +3,6 @@ pipeline {
     kubernetes {
       yaml """
 apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: jenkins-harbor
-  namespace: ems
-data:
-  HARBOR_USER: admin
-  HARBOR_PASSWD: Admin@Harbor2019
-  daemon.json: |-
-    {"insecure-registries" : ["gcr.io", "quay.io" , "es.image", "hub.easystack.io", "hub.easystack.cn"]}
-  Dockerfile: |-
-   FROM hub.easystack.io/production/escloud-linux-source-busybox:latest
-   RUN yum install -y vsftpd
----
-apiVersion: v1
 kind: Pod
 metadata:
   labels:
@@ -36,10 +22,6 @@ spec:
     env:
       - name: DOCKER_HOST
         value: tcp://localhost:2375
-    volumeMounts:
-      - name: docker-config
-        mountPath: /root/Dockerfile
-        subPath: Dockerfile
   - name: docker-daemon
     image: docker:dind
     imagePullPolicy: IfNotPresent
@@ -49,48 +31,35 @@ spec:
     env:
       - name: DOCKER_TLS_CERTDIR
         value: ""
-      - name: JENKINS_HARBOR_USER
-        valueFrom:
-          configMapKeyRef:
-            name: jenkins-harbor
-            key: HARBOR_USER
-      - name: JENKINS_HARBOR_PASSWD
-        valueFrom:
-          configMapKeyRef:
-            name: jenkins-harbor
-            key: HARBOR_PASSWD
     volumeMounts:
       - name: dind-storage
         mountPath: /var/lib/docker
-      - name: docker-config
-        mountPath: /etc/docker/daemon.json
-        subPath: daemon.json
   volumes:
     - name: dind-storage
       emptyDir: {}
-    - name: docker-config
-      configMap:
-        name: jenkins-harbor
 """
     }
   }
   stages {
     stage('login to harbor') {
       steps {
-        container('docker-daemon') {
-          sh 'sleep 30'
-          sh 'cd /root/ && docker login hub.easystack.io -u ${JENKINS_HARBOR_USER} -p ${JENKINS_HARBOR_PASSWD}'
+        container('docker') {
+          sh "sleep 60"
+          withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')])
+          sh "docker login ${dockerHub} -u ${dockerHubUser} -p ${dockerHubPassword}"
+          sh "sleep 60"
+          //sh 'cd /root/ && docker login hub.easystack.io -u ${JENKINS_HARBOR_USER} -p ${JENKINS_HARBOR_PASSWD}'
         }
       }
     }
     stage('Build docker image') {
       steps {
         container('docker') {
-          sh 'cd /root/ && sleep 30'
+          sh 'cd /root/ && sleep 60'
           //sh 'cd /root/ && cp /root/Dockerfile /home/jenkins/agent/workspace/test/Dockerfile'
           sh 'cd /home/jenkins/agent/workspace/test_master && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
           sh 'cd /root/ && docker images'
-          sh 'cd /root/ && sleep 30'
+          sh 'cd /root/ && sleep 60'
           sh 'docker push hub.easystack.io/production/testing-docker-in-docker:latest'
         }
       }
