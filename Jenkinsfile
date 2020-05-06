@@ -28,6 +28,9 @@ spec:
     tty: true
     securityContext:
       privileged: true
+    env:
+      - name: DOCKER_TLS_CERTDIR
+        value: ""
     volumeMounts:
       - name: dind-storage
         mountPath: /var/lib/docker
@@ -59,7 +62,6 @@ spec:
       steps {
         container('docker') {
           sh 'cd /root/ && sleep 60'
-          //sh 'cd /root/ && cp /root/Dockerfile /home/jenkins/agent/workspace/test/Dockerfile'
           sh 'cd /home/jenkins/agent/workspace/test_master && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
           sh 'cd /root/ && docker images'
           sh 'cd /root/ && sleep 60'
