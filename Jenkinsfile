@@ -42,7 +42,7 @@ spec:
   }
   stages{
     stage('login to harbor') {
-      docker_registry = "hub.easystack.io"
+      def docker_registry = "hub.easystack.io"
       steps {
         container('docker') {
           sh "sleep 30"
