@@ -11,6 +11,8 @@ spec:
   nodeSelector:
     openstack-control-plane: enabled
   containers:
+  - name: jnlp
+    image: hub.easystack.io/production/jnlp-slave:3.27-1
   - name: docker
     image: hub.easystack.io/production/docker:19.03.1
     imagePullPolicy: IfNotPresent
