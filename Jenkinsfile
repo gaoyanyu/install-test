@@ -12,9 +12,9 @@ spec:
     openstack-control-plane: enabled
   containers:
   - name: jnlp
-    image: hub.easystack.io/production/jnlp-slave:3.27-1
+    image: hub.easystack.io/arm64v8/jnlp-slave:3.27-1
   - name: docker
-    image: hub.easystack.io/production/docker:19.03.1
+    image: hub.easystack.io/arm64v8/docker:19.03.1
     imagePullPolicy: IfNotPresent
     command:
     - sleep
@@ -25,7 +25,7 @@ spec:
       - name: DOCKER_HOST
         value: tcp://localhost:2375
   - name: docker-daemon
-    image: hub.easystack.io/production/docker:dind
+    image: hub.easystack.io/arm64v8/docker:dind
     imagePullPolicy: IfNotPresent
     tty: true
     securityContext:
