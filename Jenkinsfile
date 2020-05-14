@@ -49,7 +49,10 @@ spec:
     }
   }
   environment {
-      tag = VersionNumber(versionNumberString: '${BUILD_DATE_FORMATTED,"yyyyMMdd"}-develop-${BUILDS_TODAY}');
+      VERSION = VersionNumber([
+          versionNumberString : '${BUILD_YEAR}.${BUILD_MONTH}.${BUILD_ID}',
+          projectStartDate : '2014-05-19'
+      ]);
   }
   stages{
     stage('login to harbor') {
@@ -66,7 +69,7 @@ spec:
       steps {
         container('docker') {
           sh 'sleep 3'
-          sh "echo $tag"
+          sh "echo $VERSION"
           sh 'cd /root/ && sleep 3600'
           sh 'cd /home/jenkins/agent/workspace/test_master && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
           sh 'cd /root/ && docker images'
