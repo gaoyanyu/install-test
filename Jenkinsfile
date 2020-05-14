@@ -1,3 +1,10 @@
+properties([
+    parameters([        
+        string(name: 'Version_Major', defaultValue: '1', description: 'Version Major'),
+        string(name: 'Version_Minor', defaultValue: '0', description: 'Version Minor'),
+        string(name: 'Version_Patch', defaultValue: '0', description: 'Version Patch')
+        ])
+    ])
 pipeline {
   agent {
     kubernetes {
@@ -49,7 +56,7 @@ spec:
     }
   }
   environment {
-      VERSION = VersionNumber(projectStartDate: '2020-05-13', versionNumberString: '${BUILD_DATE_FORMATTED, "yyyyMMdd"}', versionPrefix: '')
+      VERSION = "${params.Version_Major}.${params.Version_Minor}.${params.Version_Patch}.${BUILD_NUMBER}"
   }
   stages{
     stage('login to harbor') {
