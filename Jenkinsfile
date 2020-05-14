@@ -12,9 +12,9 @@ spec:
     openstack-control-plane: enabled
   containers:
   - name: jnlp
-    image: hub.easystack.io/arm64v8/jnlp-slave:3.27-1
+    image: hub.easystack.io/production/jnlp-slave:3.27-1
   - name: docker
-    image: hub.easystack.io/arm64v8/docker:19.03.1
+    image: hub.easystack.io/production/docker:19.03.1
     imagePullPolicy: IfNotPresent
     command:
     - sleep
@@ -25,7 +25,7 @@ spec:
       - name: DOCKER_HOST
         value: tcp://localhost:2375
   - name: docker-daemon
-    image: hub.easystack.io/arm64v8/docker:dind
+    image: hub.easystack.io/production/docker:dind
     imagePullPolicy: IfNotPresent
     tty: true
     securityContext:
@@ -48,6 +48,16 @@ spec:
 """
     }
   }
+  environment {
+      Version_Major = '1'
+      Version_Minor  = '2'
+      Version_Patch  = '3'
+      VERSION = VersionNumber([
+          versionNumberString: '${Version_Major}.${Version_Minor}.${Version_Patch}.${BUILD_NUMBER}', 
+       worstResultForIncrement: 'SUCCESS'
+
+      ]);
+  }
   stages{
     stage('login to harbor') {
       steps {
@@ -55,7 +65,9 @@ spec:
           sh "sleep 100"
           withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
               sh "docker login hub.easystack.io -u ${dockerHubUser} -p ${dockerHubPassword}"
-              sh "sleep 60"
+              sh "sleep 6"
+              sh "echo ${VERSION}"
+              sh "sleep 3600"
           }
         }
       }
