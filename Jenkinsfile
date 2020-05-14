@@ -1,10 +1,3 @@
-properties([
-    parameters([        
-        string(name: 'Version_Major', defaultValue: '1', description: 'Version Major'),
-        string(name: 'Version_Minor', defaultValue: '0', description: 'Version Minor'),
-        string(name: 'Version_Patch', defaultValue: '0', description: 'Version Patch')
-        ])
-    ])
 pipeline {
   agent {
     kubernetes {
@@ -55,9 +48,6 @@ spec:
 """
     }
   }
-  environment {
-      VERSION = "${params.Version_Major}.${params.Version_Minor}.${params.Version_Patch}.${BUILD_NUMBER}"
-  }
   stages{
     stage('login to harbor') {
       steps {
@@ -73,6 +63,7 @@ spec:
       steps {
         container('docker') {
           sh 'sleep 3'
+          VERSION = VersionNumber(versionNumberString: '${BUILD_DATE_FORMATTED, "yyyyMMdd"}-develop-${BUILDS_TODAY}')
           sh "echo $VERSION"
           sh 'cd /root/ && sleep 3600'
           sh 'cd /home/jenkins/agent/workspace/test_master && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
