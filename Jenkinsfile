@@ -1,3 +1,6 @@
+def Version_Major = '1'
+def Version_Minor  = '0'
+def Version_Patch  = '0'
 pipeline {
   agent {
     kubernetes {
@@ -48,13 +51,19 @@ spec:
 """
     }
   }
+  environment {
+      VERSION = VersionNumber([
+          versionNumberString: '${Version_Major}.${Version_Minor}.${Version_Patch}.${BUILD_MONTH}', 
+          worstResultForIncrement: 'SUCCESS'
+
+      ]);
+  }
   stages{
     stage('login to harbor') {
       container('docker') {
         steps{
             withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                 sh "docker login hub.easystack.io -u ${dockerHubUser} -p ${dockerHubPassword}"
-                sh "sleep 3"
             }
         }
       }
