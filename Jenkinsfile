@@ -51,7 +51,6 @@ spec:
   environment {
       VERSION = VersionNumber([
           versionNumberString : '${BUILD_YEAR}.${BUILD_MONTH}.${BUILD_ID}',
-          projectStartDate : '2014-05-19'
       ]);
   }
   stages{
@@ -64,6 +63,7 @@ spec:
           }
         }
       }
+    }
     stage('Build docker image') {
       steps {
         container('docker') {
