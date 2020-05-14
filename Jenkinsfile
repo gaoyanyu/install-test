@@ -49,9 +49,7 @@ spec:
     }
   }
   environment {
-      VERSION = VersionNumber([
-          versionNumberString : '${BUILD_YEAR}.${BUILD_MONTH}.${BUILD_ID}',
-      ]);
+      VERSION = VersionNumber(projectStartDate: '2020-05-13', versionNumberString: '${BUILD_DATE_FORMATTED, "yyyyMMdd"}', versionPrefix: '')
   }
   stages{
     stage('login to harbor') {
