@@ -55,29 +55,26 @@ spec:
       VERSION = VersionNumber([
           versionNumberString: '${Version_Major}.${Version_Minor}.${Version_Patch}.${BUILD_MONTH}', 
           worstResultForIncrement: 'SUCCESS'
-
       ]);
   }
   stages{
     stage('login to harbor') {
-      container('docker') {
-        steps{
+      steps{
+          container('docker') {
             withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                 sh "docker login hub.easystack.io -u ${dockerHubUser} -p ${dockerHubPassword}"
             }
-        }
+          }
       }
     }
     stage('Build docker image') {
-      container('docker') {
-          steps{
+      steps{
+          container('docker') {
               sh 'sleep 3'
-              VERSION = VersionNumber(versionNumberString: '${BUILD_DATE_FORMATTED, "yyyyMMdd"}-develop-${BUILDS_TODAY}')
               sh "echo $VERSION"
               sh 'cd /root/ && sleep 3600'
               sh 'cd /home/jenkins/agent/workspace/test_master && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
               sh 'cd /root/ && docker images'
-              sh 'cd /root/ && sleep 60'
               sh 'docker push hub.easystack.io/production/testing-docker-in-docker:latest'
           }
       }
