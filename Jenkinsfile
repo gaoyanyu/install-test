@@ -53,7 +53,7 @@ spec:
   }
   environment {
       VERSION = VersionNumber([
-          versionNumberString: '${Version_Major}.${Version_Minor}.${Version_Patch}.${BUILD_MONTH}', 
+          versionNumberString: '${Version_Major}.${Version_Minor}.${Version_Patch}.${BUILD_MONTH}',
           worstResultForIncrement: 'SUCCESS'
       ]);
   }
@@ -70,7 +70,7 @@ spec:
     stage('Build docker image') {
       steps{
           container('docker') {
-              sh 'sleep 3'
+              sh 'sleep 3000'
               sh "echo $VERSION"
               sh 'cd /root/ && sleep 3600'
               sh 'cd /home/jenkins/agent/workspace/test_master && docker build -t hub.easystack.io/production/testing-docker-in-docker:latest .'
