@@ -1,0 +1,26 @@
+stages:
+- name: compile
+  steps:
+  - runScriptConfig:
+      image: python:latest
+      shellScript: print  ("compile")
+  when:
+    branch:
+      include:
+      - master
+    event:
+      include:
+      - push
+- name: test
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: busybox:test
+- name: release
+  steps:
+  - runScriptConfig:
+      image: python:latest
+      shellScript: pritnt ("success")
+timeout: 60
+notification: {}
