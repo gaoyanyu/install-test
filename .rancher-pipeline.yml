@@ -21,6 +21,6 @@ stages:
   steps:
   - runScriptConfig:
       image: python:latest
-      shellScript: pritnt ("success")
+      shellScript: print ("success")
 timeout: 60
 notification: {}
