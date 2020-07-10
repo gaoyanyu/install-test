@@ -4,6 +4,9 @@ stages:
   - runScriptConfig:
       image: python:latest
       shellScript: print  ("compile")
+  - runScriptConfig:
+      image: python:latest
+      shellScript: print ("compile-1-2")
   when:
     branch:
       include:
@@ -13,14 +16,16 @@ stages:
       - push
 - name: test
   steps:
-  - publishImageConfig:
-      dockerfilePath: ./Dockerfile
-      buildContext: .
-      tag: busybox:test
+  - runScriptConfig:
+      image: busybox:latest
+      shellScript: date
 - name: release
   steps:
   - runScriptConfig:
       image: python:latest
       shellScript: print ("success")
+  - runScriptConfig:
+      image: python:latest
+      shellScript: print ("release")
 timeout: 60
 notification: {}
