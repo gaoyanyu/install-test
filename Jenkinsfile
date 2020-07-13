@@ -16,6 +16,6 @@ pipeline {
 
   }
   environment {
-    dockerHub = 'credentials(\'dockerHub\')'
+    HUB_CREDS = 'credentials(\'dockerHub\')'
   }
 }
