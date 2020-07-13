@@ -9,13 +9,13 @@ pipeline {
 
       }
       steps {
-        sh 'sleep 200'
+        sh 'sleep 2'
         sh 'docker login hub.easystack.cn -u ${HUB_CREDS_USR} -p ${HUB_CREDS_PSW}'
       }
     }
 
   }
   environment {
-    HUB_CREDS = 'credentials(\'dockerHub\')'
+    HUB_CREDS = credentials('dockerHub')
   }
 }
