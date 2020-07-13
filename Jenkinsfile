@@ -9,6 +9,7 @@ pipeline {
 
       }
       steps {
+        sh 'sleep 200'
         sh 'docker login hub.easystack.cn -u ${HUB_CREDS_USR} -p ${HUB_CREDS_PSW}'
       }
     }
