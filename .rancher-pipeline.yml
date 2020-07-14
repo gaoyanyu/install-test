@@ -24,6 +24,10 @@ stages:
   - runScriptConfig:
       image: python:latest
       shellScript: print ("success")
+    envFrom:
+    - sourceName: pipeline-secret
+      sourceKey: admin-user
+      targetKey: yanyu
   - runScriptConfig:
       image: python:latest
       shellScript: print ("test")
@@ -31,7 +35,14 @@ stages:
       hostname: test-server
     envFrom:
     - sourceName: pipeline-secret
-      sourceKey: registry-token
+      sourceKey: admin-user
+      targetKey: yanyu
+  - runScriptConfig:
+      image: gcc:latest
+      shellScript: sada
+    envFrom:
+    - sourceName: pipeline-secret
+      sourceKey: admin-user
       targetKey: yanyu
 timeout: 60
 notification: {}
