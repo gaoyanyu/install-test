@@ -26,6 +26,12 @@ stages:
       shellScript: print ("success")
   - runScriptConfig:
       image: python:latest
-      shellScript: print ("release")
+      shellScript: print ("test")
+    env:
+      hostname: test-server
+    envFrom:
+    - sourceName: pipeline-secret
+      sourceKey: registry-token
+      targetKey: yanyu
 timeout: 60
 notification: {}
