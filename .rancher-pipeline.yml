@@ -44,5 +44,17 @@ stages:
     - sourceName: pipeline-secret
       sourceKey: admin-user
       targetKey: yanyu
+- name: test1
+  steps:
+  - runScriptConfig:
+      image: java:8
+      shellScript: asdasdsa
+  - runScriptConfig:
+      image: node:latest
+      shellScript: sdadsa
+    envFrom:
+    - sourceName: pipeline-secret
+      sourceKey: admin-token
+      targetKey: test
 timeout: 60
 notification: {}
