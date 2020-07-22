@@ -26,10 +26,12 @@ spec:
     stage('Run maven') {
       steps {
         container('maven') {
-          sh 'mvn -version'
+          checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'test-github', url: 'https://github.com/gaoyanyu/devops.git']]])
+          sh "sleep 5"
         }
         container('busybox') {
           sh '/bin/busybox'
+          sh "echo 'hostname'"
         }
       }
     }
